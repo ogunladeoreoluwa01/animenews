@@ -22,8 +22,11 @@ export default {
         caption: '0.75rem' // 12px
       },
       fontFamily: {
-        'open-sans': ['Open Sans', 'sans-serif'],
-        raleway: ['Raleway', 'sans-serif']
+        'open-sans': ['Montserrat', 'Open Sans', 'sans-serif'],
+        raleway: ['Poppins', 'Raleway', 'sans-serif']
+      },
+      blur: {
+        xs: '2px'
       }
     }
   },

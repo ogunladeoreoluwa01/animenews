@@ -35,7 +35,7 @@
       </div>
     </div>
     <ul
-      class="text-white text-base flex flex-col gap-1 font-open-sans font-medium w-[200px] truncate text-pretty mb-7"
+      class="text-zinc-400 text-base flex flex-col gap-1 font-open-sans font-medium w-[200px] truncate text-pretty mb-7"
     >
       <li
         v-for="(name, index) in trending"
