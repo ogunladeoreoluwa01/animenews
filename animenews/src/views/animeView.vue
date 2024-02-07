@@ -158,6 +158,11 @@
       </div>
 
       <section class=" ">
+        <section class="mb-10 px-20">
+          <labelComp title="Relations" :shouldshow="show" />
+
+          <relationsCard />
+        </section>
         <section class="my-10 px-20">
           <labelComp title="recommended" :shouldshow="show" />
           <div v-if="loaders" class="flex justify-start items-center gap-2">
@@ -184,7 +189,7 @@
 </template>
 <script>
 import contentsideloader from '@/components/contentSideLoader.vue'
-import contentSidebar from '@/components/contentSidebarComp.vue'
+import relationsCard from '@/components/relationsCardComp.vue'
 import viewloaderComp from '@/components/viewloaderComp.vue'
 import labelComp from '@/components/labelComp.vue'
 import contentloader from '@/components/contentLoader.vue'
@@ -195,7 +200,7 @@ export default {
     contentCardComp,
     contentloader,
     viewloaderComp,
-    contentSidebar,
+    relationsCard,
     contentsideloader
   },
   data() {
@@ -316,7 +321,7 @@ export default {
         '#B91C1C',
         '#DB2777',
         '#EA885B',
-        '#F59E0B'
+        ' '
       ]
     }
   },
