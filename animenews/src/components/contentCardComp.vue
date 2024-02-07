@@ -8,7 +8,7 @@
       />
     </div>
     <span
-      class="w-[130px] h-[27px] leading-none line-clamp-1 text-ellipsis text-sm text-zinc-900 dark:text-zinc-50 font-semiold font-open-sans capitalize"
+      class="w-[130px] h-[27px] leading-none line-clamp-1 text-ellipsis text-sm text-zinc-900 dark:text-zinc-50 font-semiold font-raleway capitalize"
     >
       {{ headingText }}
     </span>

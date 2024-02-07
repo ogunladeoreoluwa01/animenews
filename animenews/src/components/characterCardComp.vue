@@ -3,13 +3,12 @@
     <img :src="imageSource" alt="" class="w-[85px] h-[115px]" />
     <div class="w-[250px] h-[115px] p-3 flex flex-col justify-between bg-zinc-100">
       <div>
-        <h1 class="text-xs font-bold capitalize">{{ title }}</h1>
         <p class="text-base leading-snug font-medium capitalize h-[48px] line-clamp-2">
-          {{ subtitle }}
+          {{ CharacterName }}
         </p>
       </div>
       <div>
-        <p class="text-xs font-medium capitalize">{{ category }} : {{ status }}</p>
+        <p class="text-xs font-medium capitalize">{{ role }}</p>
       </div>
     </div>
   </div>
@@ -22,21 +21,13 @@ export default {
       type: String,
       required: true
     },
-    title: {
+    CharacterName: {
       type: String,
       default: 'Source'
     },
-    subtitle: {
+    role: {
       type: String,
       default: 'Solo Lvl'
-    },
-    category: {
-      type: String,
-      default: 'Manga'
-    },
-    status: {
-      type: String,
-      default: 'Finished'
     }
   }
 }

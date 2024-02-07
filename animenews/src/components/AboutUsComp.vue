@@ -15,7 +15,7 @@
         <div class="absolute top-[25%] left-[10%] w-[471.14px]">
           <div>
             <h1 class="text-2xl font-raleway font-bold mb-2">About Us</h1>
-            <p class="text-base text-pretty font-medium font-open-sans">
+            <p class="text-base text-pretty font-medium font-raleway">
               Welcome to "Gates" – your ultimate destination for anime and manga. We're passionate
               enthusiasts celebrating the diverse world of anime and manga. At "Gates," we believe
               in the power of storytelling and creativity to inspire and connect people from all
@@ -36,7 +36,7 @@
         <div class="absolute top-[25%] left-[10%] w-[471.14px]">
           <div>
             <h1 class="text-2xl font-raleway font-bold mb-2">What We Do</h1>
-            <p class="text-base text-pretty font-medium font-open-sans">
+            <p class="text-base text-pretty font-medium font-raleway">
               At "Gates," powered by the AniList API, we provide a comprehensive collection of anime
               and manga content. Dive into exclusive interviews, behind-the-scenes insights, and
               stay updated on the latest news and trends. Discover curated tops and hidden gems,

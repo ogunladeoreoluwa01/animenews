@@ -11,7 +11,7 @@
       />
     </div>
     <span
-      class="w-[250px] h-[35px] leading-none text-base text-zinc-900 dark:text-zinc-50 font-bold font-open-sans capitalize"
+      class="w-[250px] h-[35px] leading-none text-base text-zinc-900 dark:text-zinc-50 font-bold font-raleway capitalize"
     >
       {{ headingText }}
     </span>

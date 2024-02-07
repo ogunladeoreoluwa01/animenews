@@ -9,7 +9,7 @@
           {{ trending[currentIndex].title.userPreferred }}
         </li>
         <li
-          class="text-white text-lg font-open-sans animate-fade-in h-[80px] line-clamp-3 text-ellipsis"
+          class="text-white text-lg font-raleway animate-fade-in h-[80px] line-clamp-3 text-ellipsis"
           v-html="trending[currentIndex].description"
         ></li>
         <li class="mt-7">
@@ -35,7 +35,7 @@
       </div>
     </div>
     <ul
-      class="text-zinc-400 text-base flex flex-col gap-1 font-open-sans font-medium w-[200px] truncate text-pretty mb-7"
+      class="text-zinc-400 text-base flex flex-col gap-1 font-raleway font-medium w-[200px] truncate text-pretty mb-7"
     >
       <li
         v-for="(name, index) in trending"
