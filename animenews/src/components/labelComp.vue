@@ -1,18 +1,20 @@
 <template>
   <div class="flex flex-col mb-6 w-full">
     <div class="w-full flex justify-between">
-      <h1 class="text-xl text-zinc-900 font-bold font-raleway capitalize">{{ title }}</h1>
+      <h1 class="text-xl text-zinc-900 dark:text-zinc-50 font-bold font-raleway capitalize">
+        {{ title }}
+      </h1>
       <router-link
         v-if="shouldshow"
         :to="{ name: 'Animesearch', params: { search: SearchValue } }"
-        class="text-sm text-zinc-500 font-medium font-raleway capitalize hover:text-zinc-800 hover:font-semibold transition-all duration-300 ease-linear"
+        class="text-sm text-zinc-500 dark:text-zinc-200 font-medium font-raleway capitalize hover:dark:text-zinc-50 hover:text-zinc-800 hover:font-semibold transition-all duration-300 ease-linear"
       >
         view all</router-link
       >
     </div>
 
-    <span class="w-full h-[2px] bg-zinc-300 relative">
-      <span class="w-[50px] h-[2px] bg-zinc-950 absolute left-0"></span>
+    <span class="w-full h-[2px] bg-zinc-300 relative dark:bg-zinc-500">
+      <span class="w-[50px] h-[2px] bg-zinc-950 dark:bg-zinc-50 absolute left-0"></span>
     </span>
   </div>
 </template>

@@ -15,7 +15,7 @@
         <li class="mt-7">
           <button
             class="py-2 px-6 flex gap-3 rounded-md text-center justify-center items-center transition-all duration-200 ease-in hover:-translate-y-[1px] font-semibold bg-white hover:bg-black hover:text-white"
-            :data-id="trending[currentIndex].id"
+            @click="redirectToAnime"
           >
             Check it out
           </button>
@@ -63,6 +63,10 @@ export default {
   },
 
   methods: {
+    redirectToAnime() {
+      const animeId = this.trending[this.currentIndex].id
+      this.$router.push({ path: `/anime/${animeId}` })
+    },
     fetchData() {
       const url = 'https://graphql.anilist.co/query'
       const query = `
@@ -215,11 +219,11 @@ export default {
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.5s ease-in-out;
+  animation: fadeIn 1s ease-in-out;
 }
 .slide-in-right {
-  -webkit-animation: slide-in-right 0.7s linear both;
-  animation: slide-in-right 0.7s linear both;
+  -webkit-animation: slide-in-right 1.5s linear both;
+  animation: slide-in-right 1.5s linear both;
 }
 
 @-webkit-keyframes slide-in-right {

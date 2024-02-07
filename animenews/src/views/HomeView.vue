@@ -1,20 +1,23 @@
 <template>
   <section class="app">
     <section
-      class="mb-10 w-[1440px] h-[800px] bg-hero-pattern-black bg-no-repeat bg-cover flex justify-center items-center"
+      class="mb-10 w-[1440px] h-[770px] bg-hero-pattern-black bg-no-repeat bg-cover bg-center flex justify-center items-center"
     >
       <caroselComp />
     </section>
-    <section class="my-10 px-20"><labelComp title="Who are we" :shouldshow="show" /></section>
+    <section class="my-10 px-20">
+      <labelComp title="Who are we" :shouldshow="show" />
+      <AboutUsComp />
+    </section>
     <section class="my-10 px-20">
       <labelComp title="popular this season" SearchValue="season" />
       <div v-if="popularload" class="flex justify-start items-center gap-2">
         <cardloader v-for="index in 5" :key="index" />
       </div>
-      <div v-else class="flex justify-start items-center gap-2">
+      <div v-else class="flex justify-start items-center gap-2 opacity-0 animate-fade-in">
         <router-link
           v-for="(anime, index) in season"
-          :key="index"
+          :key="index + anime.id"
           :to="{ name: 'anime', params: { id: anime.id } }"
         >
           <cardComp
@@ -31,10 +34,10 @@
       <div v-if="seasonload" class="flex justify-start items-center gap-2">
         <cardloader v-for="index in 5" :key="index" />
       </div>
-      <div v-else class="flex justify-start items-center gap-2">
+      <div v-else class="flex justify-start items-center gap-2 opacity-0 animate-fade-in">
         <router-link
           v-for="(anime, index) in nextSeason"
-          :key="index"
+          :key="index + anime.id"
           :to="{ name: 'anime', params: { id: anime.id } }"
         >
           <cardComp
@@ -51,10 +54,10 @@
       <div v-if="nextSeasonload" class="flex justify-start items-center gap-2">
         <cardloader v-for="index in 5" :key="index" />
       </div>
-      <div v-else class="flex justify-start items-center gap-2">
+      <div v-else class="flex justify-start items-center gap-2 opacity-0 animate-fade-in">
         <router-link
           v-for="(anime, index) in popular"
-          :key="index"
+          :key="index + anime.id"
           :to="{ name: 'anime', params: { id: anime.id } }"
         >
           <cardComp
@@ -71,15 +74,15 @@
       <div v-if="topload" class="flex flex-col items-center justify-start gap-5">
         <topAnime v-for="index in 10" :key="index" />
       </div>
-      <div v-else class="flex flex-col items-center justify-start gap-5">
+      <div v-else class="flex flex-col items-center justify-start gap-5 opacity-0 animate-fade-in">
         <div
-          class="flex w-[1280px] h-[80px] p-[10px] bg-slat-50 font-raleway"
+          class="flex w-[1280px] h-[80px] p-[10px] bg-slat-50 font-raleway dark:bg-zinc-300"
           v-for="(anime, index) in top"
-          :key="index"
+          :key="index + anime.id"
         >
           <div class="w-[48px] h-[60px] flex justify-center items-center">
             <h1
-              class="text-3xl font-bold text-zinc-500 opacity-80"
+              class="text-3xl font-bold text-zinc-500 opacity-80 dark:opacity-100"
               :style="{ color: anime.coverImage.color }"
             >
               #{{ index + 1 }}
@@ -139,7 +142,6 @@
         </div>
       </div>
     </section>
-    <cardComp /> <cardloader />
   </section>
 </template>
 
@@ -149,9 +151,10 @@ import cardloader from '@/components/cardLoaderComp.vue'
 import caroselComp from '@/components/caroselComp.vue'
 import labelComp from '@/components/labelComp.vue'
 import topAnime from '@/components/topAnimeCardLoader.vue'
+import AboutUsComp from '@/components/AboutUsComp.vue'
 
 export default {
-  components: { caroselComp, labelComp, cardComp, cardloader, topAnime },
+  components: { caroselComp, labelComp, cardComp, cardloader, topAnime, AboutUsComp },
   data() {
     return {
       trending: [],

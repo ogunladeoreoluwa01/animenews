@@ -8,9 +8,9 @@ export default {
 </script>
 
 <template>
-  <header class="bg-white">
+  <header class="bg-white fixed w-full z-50">
     <navBarComp />
   </header>
-  <RouterView />
+  <RouterView class="pt-[4rem]" />
   <FooterComp />
 </template>
