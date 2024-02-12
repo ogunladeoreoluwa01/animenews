@@ -58,7 +58,8 @@ export default {
     return {
       trending: [],
       currentIndex: 0,
-      timer: null
+      timer: null,
+      retries: 3,
     }
   },
 
@@ -70,29 +71,29 @@ export default {
     fetchData() {
       const url = 'https://graphql.anilist.co/query'
       const query = `
-        query($season: MediaSeason, $seasonYear: Int, $nextSeason: MediaSeason, $nextYear: Int) {
+        query($season: MediaSeason, $seasonYear: Int, $nextSeason: MediaSeason, $nextYear: Int,$isAdult: Boolean) {
           trending: Page(page: 1, perPage: 5) {
-            media(sort: TRENDING_DESC, type: ANIME, isAdult: false) {
+            media(sort: TRENDING_DESC, type: ANIME, isAdult: $isAdult) {
               ...media
             }
           }
           season: Page(page: 1, perPage: 8) {
-            media(season: $season, seasonYear: $seasonYear, sort: POPULARITY_DESC, type: ANIME, isAdult: false) {
+            media(season: $season, seasonYear: $seasonYear, sort: POPULARITY_DESC, type: ANIME, isAdult: $isAdult) {
               ...media
             }
           }
           nextSeason: Page(page: 1, perPage: 8) {
-            media(season: $nextSeason, seasonYear: $nextYear, sort: POPULARITY_DESC, type: ANIME, isAdult: false) {
+            media(season: $nextSeason, seasonYear: $nextYear, sort: POPULARITY_DESC, type: ANIME,isAdult: $isAdult) {
               ...media
             }
           }
           popular: Page(page: 1, perPage: 8) {
-            media(sort: POPULARITY_DESC, type: ANIME, isAdult: false) {
+            media(sort: POPULARITY_DESC, type: ANIME, isAdult: $isAdult) {
               ...media
             }
           }
           top: Page(page: 1, perPage: 10) {
-            media(sort: SCORE_DESC, type: ANIME, isAdult: false) {
+            media(sort: SCORE_DESC, type: ANIME, isAdult: $isAdult) {
               ...media
             }
           }
@@ -159,7 +160,8 @@ export default {
         season: 'WINTER',
         seasonYear: 2024,
         nextSeason: 'SPRING',
-        nextYear: 2024
+        nextYear: 2024,
+        isAdult: false
       }
 
       fetch(url, {
@@ -187,6 +189,20 @@ export default {
         })
         .catch((error) => {
           console.error('Error fetching data:', error)
+
+          if (this.retries > 0) {
+            console.log(`Retrying... Attempts left: ${this.retries}`)
+            // Decrease the retry count
+            this.retries--
+
+            // Call fetchData again after a delay
+            setTimeout(() => {
+              this.fetchData()
+            }, 2000)
+          } else {
+            console.error('Retry limit exceeded')
+            // Handle the case when retry limit is exceeded
+          }
         })
     },
 

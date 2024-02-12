@@ -11,22 +11,24 @@
     </section>
     <section class="my-10 px-20">
       <labelComp title="popular this season" SearchValue="season" />
-      <div v-if="popularload" class="flex justify-start items-center gap-2">
+      <div
+        v-if="popularload"
+        class="flex justify-start items-center gap-2 opacity-0 animate-fade-in"
+      >
         <cardloader v-for="index in 5" :key="index" />
       </div>
       <div v-else class="flex justify-start items-center gap-2 opacity-0 animate-fade-in">
-        <router-link
+        <cardcompHover
           v-for="(anime, index) in season"
           :key="index + anime.id"
-          :to="{ name: 'anime', params: { id: anime.id } }"
-        >
-          <cardComp
-            :headingText="anime.title.userPreferred"
-            :altText="anime.title.userPreferred"
-            :imageSrc="anime.coverImage.large"
-            :itemBackgroundColor="anime.coverImage.color"
-          />
-        </router-link>
+          :headingText="anime.title.userPreferred"
+          :altText="anime.title.userPreferred"
+          :imageSrc="anime.coverImage.large"
+          :itemBackgroundColor="anime.coverImage.color"
+          :genres="anime.genres"
+          :status="anime.status"
+          @click="navigateToAnime(anime.id)"
+        />
       </div>
     </section>
     <section class="my-10 px-20">
@@ -35,18 +37,17 @@
         <cardloader v-for="index in 5" :key="index" />
       </div>
       <div v-else class="flex justify-start items-center gap-2 opacity-0 animate-fade-in">
-        <router-link
+        <cardcompHover
           v-for="(anime, index) in nextSeason"
           :key="index + anime.id"
-          :to="{ name: 'anime', params: { id: anime.id } }"
-        >
-          <cardComp
-            :headingText="anime.title.userPreferred"
-            :altText="anime.title.userPreferred"
-            :imageSrc="anime.coverImage.large"
-            :itemBackgroundColor="anime.coverImage.color"
-          />
-        </router-link>
+          :headingText="anime.title.userPreferred"
+          :altText="anime.title.userPreferred"
+          :imageSrc="anime.coverImage.large"
+          :itemBackgroundColor="anime.coverImage.color"
+          :genres="anime.genres"
+          :status="anime.status"
+          @click="navigateToAnime(anime.id)"
+        />
       </div>
     </section>
     <section class="my-10 px-20">
@@ -55,28 +56,30 @@
         <cardloader v-for="index in 5" :key="index" />
       </div>
       <div v-else class="flex justify-start items-center gap-2 opacity-0 animate-fade-in">
-        <router-link
+        <cardcompHover
           v-for="(anime, index) in popular"
           :key="index + anime.id"
-          :to="{ name: 'anime', params: { id: anime.id } }"
-        >
-          <cardComp
-            :headingText="anime.title.userPreferred"
-            :altText="anime.title.userPreferred"
-            :imageSrc="anime.coverImage.large"
-            :itemBackgroundColor="anime.coverImage.color"
-          />
-        </router-link>
+          :headingText="anime.title.userPreferred"
+          :altText="anime.title.userPreferred"
+          :imageSrc="anime.coverImage.large"
+          :itemBackgroundColor="anime.coverImage.color"
+          :genres="anime.genres"
+          :status="anime.status"
+          @click="navigateToAnime(anime.id)"
+        />
       </div>
     </section>
     <section class="my-10 px-20">
       <labelComp title="top 100 Anime" />
-      <div v-if="topload" class="flex flex-col items-center justify-start gap-5">
+      <div
+        v-if="topload"
+        class="flex flex-col items-center justify-start gap-5 opacity-0 animate-fade-in"
+      >
         <topAnime v-for="index in 10" :key="index" />
       </div>
       <div v-else class="flex flex-col items-center justify-start gap-5 opacity-0 animate-fade-in">
         <div
-          class="flex w-[1280px] h-[80px] p-[10px] bg-slat-50 font-raleway dark:bg-zinc-300"
+          class="flex w-[1280px] h-[80px] p-[10px] bg-slat-50 font-raleway dark:bg-zinc-300 opacity-0 animate-fade-in"
           v-for="(anime, index) in top"
           :key="index + anime.id"
         >
@@ -142,11 +145,21 @@
         </div>
       </div>
     </section>
+    <div class="flex">
+      <cardcomp />
+
+      <router-link to=""> <cardcompHover /></router-link>
+      <router-link to=""> <cardcompHover /></router-link>
+      <router-link to=""> <cardcompHover /></router-link>
+      <router-link to=""> <cardcompHover /></router-link>
+      <router-link to=""> <cardcompHover /></router-link>
+      <router-link to=""> <cardcompHover /></router-link>
+    </div>
   </section>
 </template>
 
 <script>
-import cardComp from '@/components/cardComp.vue'
+import cardcompHover from '@/components/cardcompHover.vue'
 import cardloader from '@/components/cardLoaderComp.vue'
 import caroselComp from '@/components/caroselComp.vue'
 import labelComp from '@/components/labelComp.vue'
@@ -154,9 +167,17 @@ import topAnime from '@/components/topAnimeCardLoader.vue'
 import AboutUsComp from '@/components/AboutUsComp.vue'
 
 export default {
-  components: { caroselComp, labelComp, cardComp, cardloader, topAnime, AboutUsComp },
+  components: {
+    caroselComp,
+    labelComp,
+    cardloader,
+    topAnime,
+    AboutUsComp,
+    cardcompHover
+  },
   data() {
     return {
+      retries: 3,
       trending: [],
       season: [],
       nextSeason: [],
@@ -166,10 +187,14 @@ export default {
       seasonload: true,
       nextSeasonload: true,
       popularload: true,
-      topload: true
+      topload: true,
+      CALL: undefined
     }
   },
   methods: {
+    navigateToAnime(animeId) {
+      this.$router.push({ name: 'anime', params: { id: animeId } })
+    },
     formatDuration(duration) {
       const hours = Math.floor(duration / 60)
       const minutes = duration % 60
@@ -182,29 +207,29 @@ export default {
     fetchData() {
       const url = 'https://graphql.anilist.co/query'
       const query = `
-        query($season: MediaSeason, $seasonYear: Int, $nextSeason: MediaSeason, $nextYear: Int) {
+        query($season: MediaSeason, $seasonYear: Int, $nextSeason: MediaSeason, $nextYear: Int ,$isAdult: Boolean) {
           trending: Page(page: 1, perPage: 2) {
-            media(sort: TRENDING_DESC, type: ANIME, isAdult: false) {
+            media(sort: TRENDING_DESC, type: ANIME, isAdult: $isAdult) {
               ...media
             }
           }
           season: Page(page: 1, perPage: 5) {
-            media(season: $season, seasonYear: $seasonYear, sort: POPULARITY_DESC, type: ANIME, isAdult: false) {
+            media(season: $season, seasonYear: $seasonYear, sort: POPULARITY_DESC, type: ANIME, isAdult: $isAdult) {
               ...media
             }
           }
           nextSeason: Page(page: 1, perPage: 5) {
-            media(season: $nextSeason, seasonYear: $nextYear, sort: POPULARITY_DESC, type: ANIME, isAdult: false) {
+            media(season: $nextSeason, seasonYear: $nextYear, sort: POPULARITY_DESC, type: ANIME, isAdult: $isAdult) {
               ...media
             }
           }
           popular: Page(page: 1, perPage: 5) {
-            media(sort: POPULARITY_DESC, type: ANIME, isAdult: false) {
+            media(sort: POPULARITY_DESC, type: ANIME, isAdult: $isAdult) {
               ...media
             }
           }
           top: Page(page: 1, perPage: 10) {
-            media(sort: SCORE_DESC, type: ANIME, isAdult: false) {
+            media(sort: SCORE_DESC, type: ANIME, isAdult: $isAdult) {
               ...media
             }
           }
@@ -271,7 +296,8 @@ export default {
         season: 'WINTER',
         seasonYear: 2024,
         nextSeason: 'SPRING',
-        nextYear: 2024
+        nextYear: 2024,
+        isAdult: false
       }
 
       fetch(url, {
@@ -315,11 +341,30 @@ export default {
         })
         .catch((error) => {
           console.error('Error fetching data:', error)
+
+          if (this.retries > 0) {
+            console.log(`Retrying... Attempts left: ${this.retries}`)
+            // Decrease the retry count
+            this.retries--
+
+            // Call fetchData again after a delay
+            setTimeout(() => {
+              this.fetchData()
+            }, 2000)
+          } else {
+            console.error('Retry limit exceeded')
+            // Handle the case when retry limit is exceeded
+          }
         })
     }
   },
   mounted() {
     this.fetchData() // Call fetchData method when the component is mounted
+  },
+  watch: {
+    $route() {
+      window.scrollTo(0, 0)
+    }
   }
 }
 </script>

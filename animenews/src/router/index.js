@@ -44,15 +44,16 @@ const router = createRouter({
       component: () => import('../views/mangaSearchView.vue')
     },
     {
-      path: '/anime/gener/:tag', // Define your route with parameter
+      path: '/anime/tagSearch/:tag', // Define your route with parameter
       name: 'Animegener',
       component: () => import('../views/animeGenerView.vue')
     },
     {
-      path: '/manga/gener/:tag', // Define your route with parameter
+      path: '/manga/tagSearch/:tag', // Define your route with parameter
       name: 'Mangagener',
       component: () => import('../views/mangaGenerView.vue')
     }
+    // { path: '*', component: () => import('../views/notfoundView.vue') }
   ]
 })
 

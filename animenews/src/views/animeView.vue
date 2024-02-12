@@ -2,7 +2,9 @@
   <section class="">
     <viewloaderComp v-if="loaders" />
     <div v-else class="opacity-0 animate-fade-in mb-5">
-      <div class="w-dvw h-[400px] bg-gradient-to-tl from-cyan-50 via-current to-neutral-900">
+      <div
+        class="w-dvw h-[400px] bg-gradient-to-tl from-cyan-50 via-current to-neutral-900 opacity-0 animate-fade-in"
+      >
         <img :src="animeinfo.bannerImage" :alt="preferedName" class="w-dvw h-[400px]" />
       </div>
       <div class="h-fit min-h-[300px] app relative flex gap-8 justify-center">
@@ -29,7 +31,7 @@
     ></span>
     <section class="app flex gap-6">
       <div class="flex flex-col">
-        <contentsideloader v-if="loaders" />
+        <contentsideloader v-if="loaders" class="opacity-0 animate-fade-in" />
         <div v-else class="w-[208px] flex flex-col gap-3 animate-fade-in">
           <section class="bg-zinc-100 w-[208px] min-h-[400px] p-4 flex flex-col gap-3 font-raleway">
             <div
@@ -173,6 +175,7 @@
               v-for="(relation, index) in relations.edges"
               :key="index"
               :to="getRouterLink(relation.node.type, relation.node.id)"
+              class="opacity-0 animate-fade-in"
             >
               <relationsCard
                 :imageSource="relation.node.coverImage.large"
@@ -186,45 +189,54 @@
         </section>
         <section class="mb-10 px-20">
           <labelComp title="characters" :shouldshow="show" class="min-w-[1000px]" />
-          <div v-if="loaders" class="flex gap-3 flex-wrap">
+          <div v-if="loaders" class="flex gap-3 flex-wrap opacity-0 animate-fade-in">
             <relationsloader v-for="index in 2" :key="index" />
           </div>
-          <div v-else class="animate-fade-in flex gap-3 flex-wrap">
+          <div v-else class="animate-fade-in flex gap-3 flex-wrap opacity-0 animate-fade-in">
             <charactercard
               v-for="(character, index) in characterInfo.edges"
               :key="index"
               :imageSource="character.node.image.large"
               :CharacterName="character.node.name.userPreferred"
               :role="character.role"
+              class="opacity-0 animate-fade-in"
             />
           </div>
         </section>
         <section class="mb-10 px-20">
           <labelComp title="Staff" :shouldshow="show" class="min-w-[1000px]" />
-          <div v-if="loaders" class="flex gap-3 flex-wrap">
+          <div v-if="loaders" class="flex gap-3 flex-wrap opacity-0 animate-fade-in">
             <relationsloader v-for="index in 2" :key="index" />
           </div>
-          <div v-else class="animate-fade-in flex gap-3 flex-wrap">
+          <div v-else class="animate-fade-in flex gap-3 flex-wrap opacity-0 animate-fade-in">
             <charactercard
               v-for="(staff, index) in staffInfo.edges"
               :key="index"
               :imageSource="staff.node.image.large"
               :CharacterName="staff.node.name.userPreferred"
               :role="staff.role"
+              class="opacity-0 animate-fade-in"
             />
           </div>
         </section>
         <section class="my-10 px-20">
           <labelComp title="recommended" :shouldshow="show" class="min-w-[1000px]" />
-          <div v-if="loaders" class="flex justify-start items-center gap-2">
+          <div
+            v-if="loaders"
+            class="flex justify-start items-center gap-2 opacity-0 animate-fade-in"
+          >
             <contentloader v-for="index in 5" :key="index" />
           </div>
-          <div v-else class="flex justify-start items-center gap-5 flex-wrap animate-fade-in">
+          <div
+            v-else
+            class="flex justify-start items-center gap-5 flex-wrap animate-fade-in opacity-0 animate-fade-in"
+          >
             <router-link
               v-for="(anime, index) in reccomendation"
               :key="index"
               :to="{ name: 'anime', params: { id: anime.mediaRecommendation.id } }"
               @click="handleRouterLinkClick"
+              class="opacity-0 animate-fade-in"
             >
               <contentCardComp
                 :headingText="anime.mediaRecommendation.title.userPreferred"
@@ -260,6 +272,7 @@ export default {
   },
   data() {
     return {
+      retries: 3,
       show: false,
       animeinfo: [],
       preferedName: '',
@@ -824,11 +837,26 @@ export default {
         })
         .catch((error) => {
           console.error('Error fetching data:', error)
+
+          if (this.retries > 0) {
+            console.log(`Retrying... Attempts left: ${this.retries}`)
+            // Decrease the retry count
+            this.retries--
+
+            // Call fetchData again after a delay
+            setTimeout(() => {
+              this.fetchData()
+            }, 2000)
+          } else {
+            console.error('Retry limit exceeded')
+            // Handle the case when retry limit is exceeded
+          }
         })
     }
   },
 
   mounted() {
+    window.scrollTo(0, 0)
     this.fetchData()
   },
   watch: {

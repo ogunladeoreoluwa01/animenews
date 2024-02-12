@@ -2,7 +2,9 @@
   <section class="">
     <viewloaderComp v-if="loaders" />
     <div v-else class="opacity-0 animate-fade-in mb-5">
-      <div class="w-dvw h-[400px] bg-gradient-to-tl from-cyan-50 via-current to-neutral-900">
+      <div
+        class="w-dvw h-[400px] bg-gradient-to-tl from-zinc-50  dark:from-zinc-50 via-current to-zinc-900 opacity-0 animate-fade-in"
+      >
         <img :src="animeinfo.bannerImage" :alt="preferedName" class="w-dvw h-[400px]" />
       </div>
       <div class="h-fit min-h-[300px] app relative flex gap-8 justify-center">
@@ -29,7 +31,7 @@
     ></span>
     <section class="app flex gap-6">
       <div class="flex flex-col">
-        <contentsideloader v-if="loaders" />
+        <contentsideloader v-if="loaders" class="opacity-0 animate-fade-in" />
         <div v-else class="w-[208px] flex flex-col gap-3 animate-fade-in">
           <section class="bg-zinc-100 w-[208px] min-h-[400px] p-4 flex flex-col gap-3 font-raleway">
             <div
@@ -137,7 +139,7 @@
                 :style="{ backgroundColor: getRandomColor() }"
                 class="text-sm font-bold py-1 px-3 rounded-full text-white w-fit bg-zinc-500 hover:bg-zinc-950 transition-all duration-200 ease-linear"
               >
-                <router-link :to="{ name: 'Mangagener', params: { tag: genre } }">
+                <router-link :to="{ name: 'Animegener', params: { tag: genre } }">
                   {{ genre }}
                 </router-link>
               </li>
@@ -153,7 +155,7 @@
                 :style="{ backgroundColor: getRandomColor() }"
                 class="py-1 px-2 bg-zinc-500 hover:bg-zinc-950 transition-all duration-200 ease-linear text-white rounded-sm capitalize font-medium"
               >
-                <router-link :to="{ name: 'Mangagener', params: { tag: tags.name } }">
+                <router-link :to="{ name: 'Animegener', params: { tag: tags.name } }">
                   {{ tags.name }}
                 </router-link>
               </li>
@@ -173,6 +175,7 @@
               v-for="(relation, index) in relations.edges"
               :key="index"
               :to="getRouterLink(relation.node.type, relation.node.id)"
+              class="opacity-0 animate-fade-in"
             >
               <relationsCard
                 :imageSource="relation.node.coverImage.large"
@@ -186,45 +189,54 @@
         </section>
         <section class="mb-10 px-20">
           <labelComp title="characters" :shouldshow="show" class="min-w-[1000px]" />
-          <div v-if="loaders" class="flex gap-3 flex-wrap">
+          <div v-if="loaders" class="flex gap-3 flex-wrap opacity-0 animate-fade-in">
             <relationsloader v-for="index in 2" :key="index" />
           </div>
-          <div v-else class="animate-fade-in flex gap-3 flex-wrap">
+          <div v-else class="animate-fade-in flex gap-3 flex-wrap opacity-0 animate-fade-in">
             <charactercard
               v-for="(character, index) in characterInfo.edges"
               :key="index"
               :imageSource="character.node.image.large"
               :CharacterName="character.node.name.userPreferred"
               :role="character.role"
+              class="opacity-0 animate-fade-in"
             />
           </div>
         </section>
         <section class="mb-10 px-20">
           <labelComp title="Staff" :shouldshow="show" class="min-w-[1000px]" />
-          <div v-if="loaders" class="flex gap-3 flex-wrap">
+          <div v-if="loaders" class="flex gap-3 flex-wrap opacity-0 animate-fade-in">
             <relationsloader v-for="index in 2" :key="index" />
           </div>
-          <div v-else class="animate-fade-in flex gap-3 flex-wrap">
+          <div v-else class="animate-fade-in flex gap-3 flex-wrap opacity-0 animate-fade-in">
             <charactercard
               v-for="(staff, index) in staffInfo.edges"
               :key="index"
               :imageSource="staff.node.image.large"
               :CharacterName="staff.node.name.userPreferred"
               :role="staff.role"
+              class="opacity-0 animate-fade-in"
             />
           </div>
         </section>
         <section class="my-10 px-20">
           <labelComp title="recommended" :shouldshow="show" class="min-w-[1000px]" />
-          <div v-if="loaders" class="flex justify-start items-center gap-2">
+          <div
+            v-if="loaders"
+            class="flex justify-start items-center gap-2 opacity-0 animate-fade-in"
+          >
             <contentloader v-for="index in 5" :key="index" />
           </div>
-          <div v-else class="flex justify-start items-center gap-5 flex-wrap animate-fade-in">
+          <div
+            v-else
+            class="flex justify-start items-center gap-5 flex-wrap animate-fade-in opacity-0 animate-fade-in"
+          >
             <router-link
               v-for="(anime, index) in reccomendation"
               :key="index"
               :to="{ name: 'manga', params: { id: anime.mediaRecommendation.id } }"
               @click="handleRouterLinkClick"
+              class="opacity-0 animate-fade-in"
             >
               <contentCardComp
                 :headingText="anime.mediaRecommendation.title.userPreferred"
@@ -260,6 +272,7 @@ export default {
   },
   data() {
     return {
+      retries: 3,
       show: false,
       animeinfo: [],
       preferedName: '',
@@ -457,176 +470,16 @@ export default {
       const url = 'https://graphql.anilist.co/'
 
       const staffQuery = `query media($id: Int, $page: Int) {
-        Media(id: $id) {
-          id
-          staff(page: $page, sort: [RELEVANCE, ID]) {
-            pageInfo {
-              total
-              perPage
-              currentPage
-              lastPage
-              hasNextPage
-            }
-            edges {
-              id
-              role
-              node {
-                id
-                name {
-                  userPreferred
-                }
-                image {
-                  large
-                }
-              }
-            }
-          }
-        }
-      }`
-
-      const characterQuery = `query media($id: Int, $page: Int) {
-        Media(id: $id) {
-          id
-          characters(page: $page, sort: [ROLE, RELEVANCE, ID]) {
-            pageInfo {
-              total
-              perPage
-              currentPage
-              lastPage
-              hasNextPage
-            }
-            edges {
-              id
-              role
-              name
-              voiceActorRoles(sort: [RELEVANCE, ID]) {
-                roleNotes
-                dubGroup
-                voiceActor {
-                  id
-                  name {
-                    userPreferred
-                  }
-                  language
-                  image {
-                    large
-                  }
-                }
-              }
-              node {
-                id
-                name {
-                  userPreferred
-                }
-                image {
-                  large
-                }
-              }
-            }
-          }
-        }
-      }`
-      const animeQuery = `query media($id: Int, $type: MediaType, $isAdult: Boolean) {
-      Media(id: $id, type: $type, isAdult: $isAdult) {
+      Media(id: $id) {
         id
-        title {
-          userPreferred
-          romaji
-          english
-          native
-        }
-        coverImage {
-          extraLarge
-          large
-        }
-        bannerImage
-        startDate {
-          year
-          month
-          day
-        }
-        endDate {
-          year
-          month
-          day
-        }
-        description
-        season
-        seasonYear
-        type
-        format
-        status(version: 2)
-        episodes
-        duration
-        chapters
-        volumes
-        genres
-        synonyms
-        source(version: 3)
-        isAdult
-        isLocked
-        meanScore
-        averageScore
-        popularity
-        favourites
-        isFavouriteBlocked
-        hashtag
-        countryOfOrigin
-        isLicensed
-        isFavourite
-        isRecommendationBlocked
-        isReviewBlocked
-        nextAiringEpisode {
-          airingAt
-          timeUntilAiring
-          episode
-        }
-        relations {
-          edges {
-            id
-            relationType(version: 2)
-            node {
-              id
-              title {
-                userPreferred
-              }
-              format
-              type
-              status(version: 2)
-              bannerImage
-              coverImage {
-                large
-              }
-            }
+        staff(page: $page, sort: [RELEVANCE, ID]) {
+          pageInfo {
+            total
+            perPage
+            currentPage
+            lastPage
+            hasNextPage
           }
-        }
-        characterPreview: characters(perPage: 6, sort: [ROLE, RELEVANCE, ID]) {
-          edges {
-            id
-            role
-            name
-            voiceActors(language: JAPANESE, sort: [RELEVANCE, ID]) {
-              id
-              name {
-                userPreferred
-              }
-              language
-              image {
-                large
-              }
-            }
-            node {
-              id
-              name {
-                userPreferred
-              }
-              image {
-                large
-              }
-            }
-          }
-        }
-        staffPreview: staff(perPage: 8, sort: [RELEVANCE, ID]) {
           edges {
             id
             role
@@ -635,127 +488,287 @@ export default {
               name {
                 userPreferred
               }
-              language
               image {
                 large
               }
             }
-          }
-        }
-        studios {
-          edges {
-            isMain
-            node {
-              id
-              name
-            }
-          }
-        }
-        reviewPreview: reviews(perPage: 2, sort: [RATING_DESC, ID]) {
-          pageInfo {
-            total
-          }
-          nodes {
-            id
-            summary
-            rating
-            ratingAmount
-            user {
-              id
-              name
-              avatar {
-                large
-              }
-            }
-          }
-        }
-        recommendations(perPage: 7, sort: [RATING_DESC, ID]) {
-          pageInfo {
-            total
-          }
-          nodes {
-            id
-            rating
-            userRating
-            mediaRecommendation {
-              id
-              title {
-                userPreferred
-              }
-              format
-              type
-              status(version: 2)
-              bannerImage
-              coverImage {
-                large
-              }
-            }
-            user {
-              id
-              name
-              avatar {
-                large
-              }
-            }
-          }
-        }
-        externalLinks {
-          id
-          site
-          url
-          type
-          language
-          color
-          icon
-          notes
-          isDisabled
-        }
-        streamingEpisodes {
-          site
-          title
-          thumbnail
-          url
-        }
-        trailer {
-          id
-          site
-        }
-        rankings {
-          id
-          rank
-          type
-          format
-          year
-          season
-          allTime
-          context
-        }
-        tags {
-          id
-          name
-          description
-          rank
-          isMediaSpoiler
-          isGeneralSpoiler
-          userId
-        }
-        mediaListEntry {
-          id
-          status
-          score
-        }
-        stats {
-          statusDistribution {
-            status
-            amount
-          }
-          scoreDistribution {
-            score
-            amount
           }
         }
       }
     }`
+
+      const characterQuery = `query media($id: Int, $page: Int) {
+      Media(id: $id) {
+        id
+        characters(page: $page, sort: [ROLE, RELEVANCE, ID]) {
+          pageInfo {
+            total
+            perPage
+            currentPage
+            lastPage
+            hasNextPage
+          }
+          edges {
+            id
+            role
+            name
+            voiceActorRoles(sort: [RELEVANCE, ID]) {
+              roleNotes
+              dubGroup
+              voiceActor {
+                id
+                name {
+                  userPreferred
+                }
+                language
+                image {
+                  large
+                }
+              }
+            }
+            node {
+              id
+              name {
+                userPreferred
+              }
+              image {
+                large
+              }
+            }
+          }
+        }
+      }
+    }`
+      const animeQuery = `query media($id: Int, $type: MediaType, $isAdult: Boolean) {
+    Media(id: $id, type: $type, isAdult: $isAdult) {
+      id
+      title {
+        userPreferred
+        romaji
+        english
+        native
+      }
+      coverImage {
+        extraLarge
+        large
+      }
+      bannerImage
+      startDate {
+        year
+        month
+        day
+      }
+      endDate {
+        year
+        month
+        day
+      }
+      description
+      season
+      seasonYear
+      type
+      format
+      status(version: 2)
+      episodes
+      duration
+      chapters
+      volumes
+      genres
+      synonyms
+      source(version: 3)
+      isAdult
+      isLocked
+      meanScore
+      averageScore
+      popularity
+      favourites
+      isFavouriteBlocked
+      hashtag
+      countryOfOrigin
+      isLicensed
+      isFavourite
+      isRecommendationBlocked
+      isReviewBlocked
+      nextAiringEpisode {
+        airingAt
+        timeUntilAiring
+        episode
+      }
+      relations {
+        edges {
+          id
+          relationType(version: 2)
+          node {
+            id
+            title {
+              userPreferred
+            }
+            format
+            type
+            status(version: 2)
+            bannerImage
+            coverImage {
+              large
+            }
+          }
+        }
+      }
+      characterPreview: characters(perPage: 6, sort: [ROLE, RELEVANCE, ID]) {
+        edges {
+          id
+          role
+          name
+          voiceActors(language: JAPANESE, sort: [RELEVANCE, ID]) {
+            id
+            name {
+              userPreferred
+            }
+            language
+            image {
+              large
+            }
+          }
+          node {
+            id
+            name {
+              userPreferred
+            }
+            image {
+              large
+            }
+          }
+        }
+      }
+      staffPreview: staff(perPage: 8, sort: [RELEVANCE, ID]) {
+        edges {
+          id
+          role
+          node {
+            id
+            name {
+              userPreferred
+            }
+            language
+            image {
+              large
+            }
+          }
+        }
+      }
+      studios {
+        edges {
+          isMain
+          node {
+            id
+            name
+          }
+        }
+      }
+      reviewPreview: reviews(perPage: 2, sort: [RATING_DESC, ID]) {
+        pageInfo {
+          total
+        }
+        nodes {
+          id
+          summary
+          rating
+          ratingAmount
+          user {
+            id
+            name
+            avatar {
+              large
+            }
+          }
+        }
+      }
+      recommendations(perPage: 7, sort: [RATING_DESC, ID]) {
+        pageInfo {
+          total
+        }
+        nodes {
+          id
+          rating
+          userRating
+          mediaRecommendation {
+            id
+            title {
+              userPreferred
+            }
+            format
+            type
+            status(version: 2)
+            bannerImage
+            coverImage {
+              large
+            }
+          }
+          user {
+            id
+            name
+            avatar {
+              large
+            }
+          }
+        }
+      }
+      externalLinks {
+        id
+        site
+        url
+        type
+        language
+        color
+        icon
+        notes
+        isDisabled
+      }
+      streamingEpisodes {
+        site
+        title
+        thumbnail
+        url
+      }
+      trailer {
+        id
+        site
+      }
+      rankings {
+        id
+        rank
+        type
+        format
+        year
+        season
+        allTime
+        context
+      }
+      tags {
+        id
+        name
+        description
+        rank
+        isMediaSpoiler
+        isGeneralSpoiler
+        userId
+      }
+      mediaListEntry {
+        id
+        status
+        score
+      }
+      stats {
+        statusDistribution {
+          status
+          amount
+        }
+        scoreDistribution {
+          score
+          amount
+        }
+      }
+    }
+  }`
 
       const staffVariables = {
         id: this.$route.params.id,
@@ -824,11 +837,26 @@ export default {
         })
         .catch((error) => {
           console.error('Error fetching data:', error)
+
+          if (this.retries > 0) {
+            console.log(`Retrying... Attempts left: ${this.retries}`)
+            // Decrease the retry count
+            this.retries--
+
+            // Call fetchData again after a delay
+            setTimeout(() => {
+              this.fetchData()
+            }, 2000)
+          } else {
+            console.error('Retry limit exceeded')
+            // Handle the case when retry limit is exceeded
+          }
         })
     }
   },
 
   mounted() {
+    window.scrollTo(0, 0)
     this.fetchData()
   },
   watch: {

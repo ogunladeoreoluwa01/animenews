@@ -5,6 +5,7 @@
 .app {
   max-width: 1440px;
   margin: 0 auto;
+  scroll-behavior: smooth;
 }
 .clip {
   clip-path: polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%);

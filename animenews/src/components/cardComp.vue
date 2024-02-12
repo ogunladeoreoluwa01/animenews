@@ -1,4 +1,7 @@
 <template>
+  <div>
+
+ 
   <div class="flex flex-col items-start gap-[0.1rem]">
     <div
       class="w-[250px] h-[350px] overflow-hidden rounded-t-md"
@@ -16,6 +19,8 @@
       {{ headingText }}
     </span>
   </div>
+  
+</div>
 </template>
 
 <script>

@@ -9,7 +9,7 @@
         </p>
       </div>
       <div>
-        <p class="text-xs font-medium capitalize">{{ category }} : {{ status }}</p>
+        <p class="text-xs font-medium capitalize">{{ category }} : {{ transformString(status) }}</p>
       </div>
     </div>
   </div>
@@ -37,6 +37,11 @@ export default {
     status: {
       type: String,
       default: 'Finished'
+    }
+  },
+  methods: {
+    transformString(str) {
+      return str.replace(/[_-]/g, ' ')
     }
   }
 }
