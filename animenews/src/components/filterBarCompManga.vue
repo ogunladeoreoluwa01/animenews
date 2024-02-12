@@ -299,7 +299,7 @@
           <span
             v-if="yearQuery"
             @click="removeyear()"
-            class="hover:text-zinc-200 hover:dark:text-zinc-950 text-zinc-50 dark:text-zinc-950 hover:line-through decoration-zinc-50 dark:decoration-zinc-950 bg-zinc-950 dark:bg-zinc-50cursor-pointer capitalize text-base font-semibold pl-1 pr-3 rounded-sm transition-all duration-300 ease-in-out"
+            class="hover:text-zinc-200 hover:dark:text-zinc-950 text-zinc-50 dark:text-zinc-950 hover:line-through decoration-zinc-50 dark:decoration-zinc-950 bg-zinc-950 dark:bg-zinc-50 cursor-pointer capitalize text-base font-semibold pl-1 pr-3 rounded-sm transition-all duration-300 ease-in-out"
             >{{ yearQuery }}</span
           >
           <span
@@ -310,7 +310,7 @@
           >
           <span
             v-if="searchQuery"
-            class="hover:text-zinc-200 hover:dark:text-zinc-950 text-zinc-50 dark:text-zinc-950 hover:line-through decoration-zinc-50 dark:decoration-zinc-950 bg-zinc-950 dark:bg-zinc-50 cursor-pointer capitalize text-base font-semibold py-1 px-2 rounded-sm transition-all duration-300 ease-in-out"
+            class="hover:text-zinc-200 hover:dark:text-zinc-950 text-zinc-50 dark:text-zinc-950 hover:line-through decoration-zinc-50 dark:decoration-zinc-950 bg-zinc-950 dark:bg-zinc-50 cursor-pointer capitalize text-base font-semibold pl-1 pr-2 rounded-sm transition-all duration-300 ease-in-out"
             >{{ searchQuery }}</span
           >
         </div>
