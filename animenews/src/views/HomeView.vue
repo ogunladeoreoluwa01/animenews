@@ -1,7 +1,7 @@
 <template>
   <section class="app">
     <section
-      class="mb-10 w-[1440px] h-[770px] bg-hero-pattern-black bg-no-repeat bg-cover bg-center flex justify-center items-center"
+      class="mb-10 w-[1440px] h-[770px] bg-hero-pattern-black bg-no-repeat bg-cover bg-center flex justify-center items-center scale-95"
     >
       <caroselComp />
     </section>
@@ -320,19 +320,19 @@ export default {
           // Set loading flags to false with a delay
           setTimeout(() => {
             this.seasonload = false
-          }, 1000)
+          }, 600)
 
           setTimeout(() => {
             this.nextSeasonload = false
-          }, 1100)
+          }, 650)
 
           setTimeout(() => {
             this.popularload = false
-          }, 1200)
+          }, 700)
 
           setTimeout(() => {
             this.topload = false
-          }, 1300)
+          }, 750)
         })
         .catch((error) => {
           console.error('Error fetching data:', error)
@@ -345,7 +345,7 @@ export default {
             // Call fetchData again after a delay
             setTimeout(() => {
               this.fetchData()
-            }, 2000)
+            }, 500)
           } else {
             console.error('Retry limit exceeded')
             // Handle the case when retry limit is exceeded

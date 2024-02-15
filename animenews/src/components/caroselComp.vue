@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-end justify-end w-full ml-10 mr-10">
+  <div class="flex items-end justify-end w-full ml-10 mr-10 group">
     <div class="flex items-end gap-1 w-fit self-start" v-if="trending.length > 0">
       <ul
         :key="trending[currentIndex].id"
@@ -29,9 +29,11 @@
         <img
           :src="trending[currentIndex].coverImage.extraLarge"
           :alt="trending[currentIndex].title.userPreferred"
-          class="clip w-full h-full object-cover object-center"
+          class="clip w-full h-full object-cover object-center scale-105"
         />
-        <div class="clip absolute inset-0 bg-black opacity-25"></div>
+        <div
+          class="clip absolute inset-0 bg-zinc-900 opacity-10 scale-105 group-hover:scale-105 transition-all duration-200 ease-linear"
+        ></div>
       </div>
     </div>
     <ul
@@ -59,7 +61,7 @@ export default {
       trending: [],
       currentIndex: 0,
       timer: null,
-      retries: 3,
+      retries: 3
     }
   },
 
@@ -198,7 +200,7 @@ export default {
             // Call fetchData again after a delay
             setTimeout(() => {
               this.fetchData()
-            }, 2000)
+            }, 600)
           } else {
             console.error('Retry limit exceeded')
             // Handle the case when retry limit is exceeded
@@ -209,7 +211,7 @@ export default {
     startTimer() {
       this.timer = setInterval(() => {
         this.currentIndex = (this.currentIndex + 1) % this.trending.length
-      }, 4000) // Change index every 2 seconds (adjust as needed)
+      }, 5000) // Change index every 2 seconds (adjust as needed)
     },
     changeIndex(index) {
       this.currentIndex = index
@@ -228,6 +230,9 @@ export default {
 @keyframes fadeIn {
   0% {
     opacity: 0;
+  }
+  50% {
+    opacity: 0.5;
   }
   100% {
     opacity: 1;

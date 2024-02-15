@@ -1,8 +1,5 @@
 <template>
   <section class="app">
-    <div class="dark:text-white">
-      {{ $route.query }}
-    </div>
     <filterBarComp class="sticky z-30" />
     <section class="mt-6 flex flex-wrap gap-6">
       <div class="flex flex-wrap gap-6">
@@ -16,6 +13,7 @@
             :itemBackgroundColor="anime.coverImage.color"
             :genres="anime.genres"
             :status="anime.status"
+            :format="anime.format"
             :index="index"
             :search="search"
             @click="navigateToAnime(anime.id)"
@@ -33,7 +31,11 @@
     </section>
 
     <div class="text-xl text-zinc-800 font-raleway font-medium capitalize dark:text-zinc-50 mt-8">
-      <h1>keep scrolling ..</h1>
+      <h1 v-if="hasNextPage">keep scrolling ..</h1>
+      <h v-else class="font-normal">
+        Kudos, fellow otaku! You've reached the end of our catalog. But fret not, there's more
+        excitement awaiting your discovery. Keep the anime flame burning! ✨
+      </h>
     </div>
 
     <button
@@ -75,10 +77,20 @@ export default {
       tags: undefined,
       genres: undefined,
       year: undefined,
-      season: undefined
+      season: undefined,
+      isThereContent: true,
+      hasNextPage: null
     }
   },
+
   methods: {
+    checkSort() {
+      if (this.search !== undefined) {
+        this.sort = ['SEARCH_MATCH']
+      } else {
+        this.sort = ['TRENDING_DESC', 'POPULARITY_DESC']
+      }
+    },
     tothetop() {
       window.scrollTo({
         top: 0,
@@ -92,8 +104,9 @@ export default {
       let bottomOfWindow =
         document.documentElement.scrollTop + window.innerHeight ===
         document.documentElement.offsetHeight
-      if (bottomOfWindow) {
+      if (bottomOfWindow && this.hasNextPage === true) {
         this.loadmore()
+        this.isThereContent = false
       }
     },
     loadmore() {
@@ -101,7 +114,7 @@ export default {
       this.ismore = true
       setTimeout(() => {
         this.fetchData()
-      }, 1000)
+      }, 400)
     },
 
     fetchData() {
@@ -132,15 +145,15 @@ export default {
       })
         .then((response) => response.json())
         .then((data) => {
-          // this.animeInfo = [...this.animeInfo, ...data.data.Page.media]
+          this.animeInfo = [...this.animeInfo, ...data.data.Page.media]
+          this.hasNextPage = data.data.Page.pageInfo.hasNextPage
           console.log(data)
-
           setTimeout(() => {
             this.isLoading = true
-          }, 1000)
+          }, 400)
           setTimeout(() => {
             this.ismore = false
-          }, 500)
+          }, 400)
         })
         .catch((error) => {
           console.error('Error fetching data:', error)
@@ -153,7 +166,7 @@ export default {
             // Call fetchData again after a delay
             setTimeout(() => {
               this.fetchData()
-            }, 2000)
+            }, 500)
           } else {
             console.error('Retry limit exceeded')
             // Handle the case when retry limit is exceeded
@@ -188,7 +201,8 @@ export default {
   },
   watch: {
     $route() {
-      window.scrollTo(0, 0) // Force scroll to top of the page
+      window.scrollTo(0, 0)
+      this.checkSort() // Force scroll to top of the page
       setTimeout(() => {
         this.fetchData() // First API call
         location.reload() // Force reload

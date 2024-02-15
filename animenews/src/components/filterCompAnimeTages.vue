@@ -629,7 +629,6 @@ export default {
     this.genresQuery = Array.isArray(query.genre) ? query.genre : query.genre ? [query.genre] : []
     this.yearQuery = query.year ? parseInt(query.year) : undefined
     this.seasonQuery = query.season || ''
-
     console.log(this.genresQuery)
 
     this.fetchTagsData() // Assuming fetchTagsData is a method that fetches tags data

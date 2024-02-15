@@ -51,23 +51,25 @@
                 <span class="font-semibold">{{ minutes }} </span>&nbsp;
               </p>
             </div>
-            <div v-if="animeinfo.format !== undefined">
+            <div v-if="animeinfo.format !== null && animeinfo.format !== null">
               <h1 class="text-base font-semibold capitalize">Format</h1>
-              <p class="text-sm font-normal capitalize">{{ animeinfo.format }}</p>
+              <p class="text-sm font-normal capitalize">
+                {{ animeinfo.format }} {{ animeinfo.format === 'TV' ? 'Show' : '' }}
+              </p>
             </div>
-            <div v-if="animeinfo.episodes !== undefined">
-              <h1 class="text-base font-semibold capitalize">Episodes</h1>
-              <p class="text-sm font-normal capitalize">{{ animeinfo.episodes }}</p>
+            <div v-if="animeinfo.chapters !== null">
+              <h1 class="text-base font-semibold capitalize">chapters</h1>
+              <p class="text-sm font-normal capitalize">{{ animeinfo.chapters }}</p>
             </div>
-            <div v-if="animeinfo.duration !== undefined">
-              <h1 class="text-base font-semibold capitalize">episode Duration</h1>
-              <p class="text-sm font-normal capitalize">{{ animeinfo.duration }} mins</p>
+            <div v-if="animeinfo.volumes !== null">
+              <h1 class="text-base font-semibold capitalize">volumes</h1>
+              <p class="text-sm font-normal capitalize">{{ animeinfo.volumes }}</p>
             </div>
-            <div v-if="animeinfo.status !== undefined">
+            <div v-if="animeinfo.status !== null">
               <h1 class="text-base font-semibold capitalize">Status</h1>
               <p class="text-sm font-normal capitalize">{{ animeinfo.status }}</p>
             </div>
-            <div v-if="animeinfo.startDate !== undefined && animeinfo.startDate.length !== 0">
+            <div v-if="animeinfo.startDate !== null && animeinfo.startDate.length !== 0">
               <h1 class="text-base font-semibold capitalize">Start date</h1>
               <p class="text-sm font-normal capitalize">
                 {{ formattedStartMonth }},{{ animeinfo.startDate.day }},{{
@@ -75,53 +77,34 @@
                 }}
               </p>
             </div>
-            <div v-if="animeinfo.endDate !== undefined && animeinfo.endDate.length !== 0">
+            <div v-if="animeinfo.endDate !== null && animeinfo.endDate.length !== 0">
               <h1 class="text-base font-semibold capitalize">Release Date</h1>
               <p class="text-sm font-normal capitalize">
-                {{ formattedEndMonth }},{{ animeinfo.endDate.day }},{{ animeinfo.endDate.year }}
+                {{ formattedEndMonth }} {{ animeinfo.endDate.day }} {{ animeinfo.endDate.year }}
               </p>
             </div>
-            <div v-if="animeinfo.season !== undefined">
-              <h1 class="text-base font-semibold capitalize">Season</h1>
-              <p class="text-sm font-normal capitalize">{{ animeinfo.season }}</p>
-            </div>
-            <div v-if="animeinfo.studios !== undefined && animeinfo.studios.length !== 0">
-              <h1 class="text-base font-semibold capitalize">Studios</h1>
-              <p class="text-sm font-normal capitalize">
-                {{ firstStudio }}
-              </p>
-            </div>
-            <div v-if="animeinfo.studios !== undefined && animeinfo.studios.length !== 0">
-              <h1 class="text-base font-semibold capitalize">Producers</h1>
-              <p
-                class="text-sm font-normal capitalize"
-                v-for="(studio, index) in studioNames.slice(1)"
-                :key="index"
-              >
-                {{ studio }}
-              </p>
-            </div>
-            <div v-if="animeinfo.source !== undefined">
+
+            <div v-if="animeinfo.source !== null">
               <h1 class="text-base font-semibold capitalize">Source</h1>
               <p class="text-sm font-normal capitalize">{{ animeinfo.source }}</p>
             </div>
-            <div v-if="animeinfo.hashtag !== undefined">
+            <div v-if="animeinfo.hashtag !== null">
               <h1 class="text-base font-semibold capitalize">Hashtag</h1>
               <p class="text-sm font-normal capitalize">{{ animeinfo.hashtag }}</p>
             </div>
-            <div v-if="animeinfo.title.romaji !== undefined">
+            <div v-if="animeinfo.title.romaji !== null">
               <h1 class="text-base font-semibold capitalize">Romaji</h1>
               <p class="text-sm font-normal capitalize">{{ animeinfo.title.romaji }}</p>
             </div>
-            <div v-if="animeinfo.title.english !== undefined">
+            <div v-if="animeinfo.title.english !== null">
               <h1 class="text-base font-semibold capitalize">English</h1>
               <p class="text-sm font-normal capitalize">{{ animeinfo.title.english }}</p>
             </div>
-            <div v-if="animeinfo.title.native !== undefined">
+            <div v-if="animeinfo.title.native !== null">
               <h1 class="text-base font-semibold capitalize">Native</h1>
               <p class="text-sm font-normal capitalize">{{ animeinfo.title.native }}</p>
             </div>
-            <div v-if="animeinfo.synonyms !== undefined && animeinfo.synonyms.length !== 0">
+            <div v-if="animeinfo.synonyms !== null && animeinfo.synonyms.length !== 0">
               <h1 class="text-base font-semibold capitalize">Synonyms</h1>
               <p class="text-sm font-normal capitalize">
                 <span v-for="(synonym, index) in animeinfo.synonyms" :key="index">
@@ -141,7 +124,7 @@
                 :style="{ backgroundColor: getGenreColor(genre) }"
                 class="text-sm font-bold py-1 px-3 rounded-full text-white w-fit bg-zinc-200 hover:bg-zinc-400 transition-all duration-200 ease-linear"
               >
-                <router-link :to="{ name: 'Animegener', params: { tag: genre } }">
+                <router-link :to="{ name: 'Mangagener', query: { genre: genre } }">
                   {{ genre }}
                 </router-link>
               </li>
@@ -150,15 +133,14 @@
           <div class="">
             <h1 class="text-base font-semibold capitalize">Tags</h1>
 
-            <ul class="flex flex-col gap-2">
+            <ul class="flex flex-col gap-2 w-[208px]">
               <li
                 v-for="(tags, tagIndex) in animeinfo.tags"
                 :key="tagIndex"
-                class="py-1 px-2 text-zinc-900 bg-zinc-200 dark:text-zinc-100 hover:bg-zinc-400 dark:bg-zinc-800 dark:hover:bg-zinc-900 transition-all duration-200 ease-linear rounded-sm capitalize font-semibold"
+                @click="navigateToTagspager(tags.name)"
+                class="w-[208px] cursor-pointer py-1 px-2 text-zinc-900 bg-zinc-200 dark:text-zinc-100 hover:bg-zinc-400 dark:bg-zinc-800 dark:hover:bg-zinc-900 transition-all duration-200 ease-linear rounded-sm capitalize font-semibold"
               >
-                <router-link :to="{ name: 'Animegener', params: { tag: tags.name } }">
-                  {{ tags.name }}
-                </router-link>
+                {{ tags.name }}
               </li>
             </ul>
           </div>
@@ -398,6 +380,9 @@ export default {
   },
 
   methods: {
+    navigateToTagspager(tagsName) {
+      this.$router.push({ name: 'Mangagener', query: { tag: tagsName } })
+    },
     getRouterLink(type, id) {
       return {
         name: type.toLowerCase(), // Assuming your route name matches the type
@@ -774,7 +759,7 @@ export default {
 
           setTimeout(() => {
             this.loaders = false // After 2 seconds, set loader to false
-          }, 2500)
+          }, 700)
           // Handle response data as needed
         })
         .catch((error) => {
@@ -788,7 +773,7 @@ export default {
             // Call fetchData again after a delay
             setTimeout(() => {
               this.fetchData()
-            }, 2000)
+            }, 600)
           } else {
             console.error('Retry limit exceeded')
             // Handle the case when retry limit is exceeded

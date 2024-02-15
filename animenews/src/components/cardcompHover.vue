@@ -1,5 +1,5 @@
 <template>
-  <div class="relative group w-[250px]">
+  <div class="relative group w-[250px] cursor-pointer">
     <div
       v-if="checkCondition()"
       class="rounded-full text-zinc-50 absolute text-base top-[-10px] left-[-10px] w-[2.85rem] h-[2.85rem] justify-center items-center z-10 font-semibold font-raleway flex bg-black shadow-zinc-800 shadow-md"

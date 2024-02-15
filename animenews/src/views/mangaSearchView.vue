@@ -19,6 +19,7 @@
             :genres="anime.genres"
             :status="anime.status"
             :index="index"
+            :format="anime.format"
             :search="search"
             @click="navigateToAnime(anime.id)"
           />
@@ -35,7 +36,11 @@
     </section>
 
     <div class="text-xl text-zinc-800 font-raleway font-medium capitalize dark:text-zinc-50 mt-8">
-      <h1>keep scrolling ..</h1>
+      <h1 v-if="hasNextPage">keep scrolling ..</h1>
+      <h v-else>
+        Kudos, fellow otaku! You've reached the end of our catalog. But fret not, there's more
+        excitement awaiting your discovery. Keep the anime flame burning! ✨
+      </h>
     </div>
 
     <button
@@ -75,7 +80,8 @@ export default {
       retries: 3,
       ismore: false,
       search: this.$route.params.search,
-      compkey: 0
+      isThereContent: true,
+      hasNextPage: null
     }
   },
 
@@ -93,8 +99,9 @@ export default {
       let bottomOfWindow =
         document.documentElement.scrollTop + window.innerHeight ===
         document.documentElement.offsetHeight
-      if (bottomOfWindow) {
+      if (bottomOfWindow && this.hasNextPage === true) {
         this.loadmore()
+        this.isThereContent = false
       }
     },
     loadmore() {
@@ -102,7 +109,7 @@ export default {
       this.ismore = true
       setTimeout(() => {
         this.fetchData()
-      }, 1000)
+      }, 500)
     },
     RouteCheck() {
       const routeCheck = this.$route.params.search
@@ -112,7 +119,7 @@ export default {
         this.isLoading = false
         setTimeout(() => {
           this.fetchData()
-        }, 1000)
+        }, 500)
         // Your API call logic for "all anime"
       }
       if (routeCheck === 'trending') {
@@ -121,7 +128,7 @@ export default {
         this.isLoading = false
         setTimeout(() => {
           this.fetchData()
-        }, 1000)
+        }, 500)
         // Your API call logic for "trending"
       }
       if (routeCheck === 'popular') {
@@ -130,7 +137,7 @@ export default {
         this.isLoading = false
         setTimeout(() => {
           this.fetchData()
-        }, 1000)
+        }, 500)
         // Your API call logic for "popular"
       }
       if (routeCheck === 'title') {
@@ -139,7 +146,7 @@ export default {
         this.isLoading = false
         setTimeout(() => {
           this.fetchData()
-        }, 1000)
+        }, 500)
         // Your API call logic for "title"
       }
       if (routeCheck === 'top-100') {
@@ -148,7 +155,7 @@ export default {
         this.isLoading = false
         setTimeout(() => {
           this.fetchData()
-        }, 1000)
+        }, 500)
         // Your API call logic for "average score"
       }
       if (routeCheck === 'date added') {
@@ -157,7 +164,7 @@ export default {
         this.isLoading = false
         setTimeout(() => {
           this.fetchData()
-        }, 1000)
+        }, 500)
         // Your API call logic for "date added"
       }
       if (routeCheck === 'release date') {
@@ -166,7 +173,7 @@ export default {
         this.isLoading = false
         setTimeout(() => {
           this.fetchData()
-        }, 1000)
+        }, 500)
         // Your API call logic for "release date"
       }
     },
@@ -175,7 +182,7 @@ export default {
       const url = 'https://graphql.anilist.co/query'
       const query = `
       query ($page: Int, $type: MediaType, $isAdult: Boolean, $sort: [MediaSort]) {
-        Page(page: $page, perPage: 20) {
+        Page(page: $page, perPage: 20){pageInfo{total perPage currentPage lastPage hasNextPage }
           media(sort: $sort, type: $type, isAdult: $isAdult) {
             id
             title {
@@ -254,6 +261,7 @@ export default {
         .then((response) => response.json())
         .then((data) => {
           this.animeInfo = [...this.animeInfo, ...data.data.Page.media]
+          this.hasNextPage = data.data.Page.pageInfo.hasNextPage
           console.log(data)
 
           setTimeout(() => {

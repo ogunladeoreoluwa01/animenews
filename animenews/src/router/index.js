@@ -49,7 +49,7 @@ const router = createRouter({
       component: () => import('../views/animeGenerView.vue')
     },
     {
-      path: '/manga/tagSearch/:tag', // Define your route with parameter
+      path: '/manga/tagSearch', // Define your route with parameter
       name: 'Mangagener',
       component: () => import('../views/mangaGenerView.vue')
     }
