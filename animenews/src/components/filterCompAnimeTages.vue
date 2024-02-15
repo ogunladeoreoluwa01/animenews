@@ -9,7 +9,7 @@
             type="text"
             v-model="searchQuery"
             @input="updateSearchQueryValues()"
-            class="w-[30rem] border-b border-zinc-700 dark:border-zinc-200 py-1 focus:border-b-2 focus:border-zinc-950 dark:focus:border-zinc-50 transition-colors focus:outline-none peer bg-inherit duration-200 ease-in-out indent-16 dark:text-zinc-50"
+            class="w-[30rem] border-b border-zinc-700 dark:border-zinc-200 py-1 focus:border-b-2 dark:text-zinc-50 focus:border-zinc-950 dark:focus:border-zinc-50 transition-colors focus:outline-none peer bg-inherit duration-200 ease-in-out indent-16"
           />
           <label
             for="Search"
@@ -623,7 +623,14 @@ export default {
   },
 
   mounted() {
-    // Assign query parameters to data propertie
+    const query = this.$route.query
+    this.searchQuery = query.search || ''
+    this.tagsQuery = Array.isArray(query.tag) ? query.tag : query.tag ? [query.tag] : []
+    this.genresQuery = Array.isArray(query.genre) ? query.genre : query.genre ? [query.genre] : []
+    this.yearQuery = query.year ? parseInt(query.year) : undefined
+    this.seasonQuery = query.season || ''
+
+    console.log(this.genresQuery)
 
     this.fetchTagsData() // Assuming fetchTagsData is a method that fetches tags data
     this.populateYearArray() // Assuming populateYearArray is a method that populates the year array

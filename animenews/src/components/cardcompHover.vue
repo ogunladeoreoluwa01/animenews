@@ -19,19 +19,22 @@
         />
       </div>
       <span
-        class="w-[250px] h-[35px] leading-none text-base text-zinc-900 dark:text-zinc-50 font-bold font-raleway capitalize"
+        class="w-[250px] h-[35px] truncate leading-none text-base text-zinc-900 dark:text-zinc-50 font-bold font-raleway capitalize"
       >
         {{ headingText }}
       </span>
     </div>
     <div
-      class="w-[300px] min-h-[180px] absolute rounded-md flex-col z-40 gap-2 shadow-lg bg-white dark:text-zinc-50 dark:bg-zinc-800 p-4 group-hover:flex hidden top-[35%] -translate-y-1/2 -right-2 translate-x-full transition-all duration-300 ease-linear animate-fade-in"
+      class="w-[300px] min-h-[200px] absolute rounded-md flex-col z-40 gap-2 shadow-lg bg-white dark:text-zinc-50 dark:bg-zinc-800 p-4 group-hover:flex hidden top-[35%] -translate-y-1/2 -right-2 translate-x-full transition-all duration-300 ease-linear animate-fade-in"
     >
       <h1 class="font-semibold capitalize text-base" :style="{ color: itemBackgroundColor }">
-        {{ format }} {{ format === 'TV' ? 'Show' : '' }}
+        {{ headingText }}
       </h1>
       <h1 class="text-base font-semibold capitalize">
         {{ transformString(status) }}
+      </h1>
+      <h1 class="font-semibold capitalize text-base" :style="{ color: itemBackgroundColor }">
+        {{ format }} {{ format === 'TV' ? 'Show' : '' }}
       </h1>
 
       <h1 class="text-base font-semibold capitalize">{{ episodes }} episodes</h1>
@@ -53,7 +56,10 @@
 export default {
   methods: {
     checkCondition() {
-      return this.index <= 99 && (this.search === 'trending' || this.search === 'popular')
+      return (
+        this.index <= 99 &&
+        (this.search === 'trending' || this.search === 'popular' || this.search === 'top-100')
+      )
     },
     transformString(str) {
       return str.replace(/[_-]/g, ' ')

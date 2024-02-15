@@ -310,6 +310,7 @@
           >
           <span
             v-if="searchQuery"
+            @click="removeSearch()"
             class="hover:text-zinc-200 hover:dark:text-zinc-950 text-zinc-50 dark:text-zinc-950 hover:line-through decoration-zinc-50 dark:decoration-zinc-950 bg-zinc-950 dark:bg-zinc-50 cursor-pointer capitalize text-base font-semibold pl-1 pr-2 rounded-sm transition-all duration-300 ease-in-out"
             >{{ searchQuery }}</span
           >
@@ -401,15 +402,7 @@ export default {
       tags: [],
       seasons: ['japan', 'south korea', 'china', 'Taiwan'],
       year: [],
-      sort: [
-        'all manga',
-        'trending',
-        'popular',
-        'title',
-        'average score',
-        'date added',
-        'release date'
-      ],
+      sort: ['trending', 'popular', 'title', 'top-100', 'date added', 'release date', 'all manga'],
 
       sortOption: this.$route.params.search,
       searchQuery: '',
@@ -465,6 +458,9 @@ export default {
     },
     removeSeason() {
       this.seasonQuery = ''
+    },
+    removeSearch() {
+      this.searchQuery = ''
     },
     clearQueries() {
       this.searchQuery = ''

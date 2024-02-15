@@ -3,7 +3,7 @@
     <viewloaderComp v-if="loaders" />
     <div v-else class="opacity-0 animate-fade-in mb-5">
       <div
-        class="w-dvw h-[400px] bg-gradient-to-tl from-zinc-50  dark:from-zinc-50 via-current to-zinc-900 opacity-0 animate-fade-in"
+        class="w-dvw h-[400px] bg-gradient-to-tl from-cyan-50 via-current to-neutral-900 opacity-0 animate-fade-in"
       >
         <img :src="animeinfo.bannerImage" :alt="preferedName" class="w-dvw h-[400px]" />
       </div>
@@ -27,18 +27,20 @@
       </div>
     </div>
     <span
-      class="mb-10 mx-auto justify-center flex h-[0.1rem] w-[1800px] bg-zinc-800 dark:bg-zinc-50 inline-block"
+      class="mb-10 mx-auto justify-center flex h-[0.1rem] w-[1800px] bg-zinc-800 dark:bg-zinc-50"
     ></span>
     <section class="app flex gap-6">
       <div class="flex flex-col">
         <contentsideloader v-if="loaders" class="opacity-0 animate-fade-in" />
         <div v-else class="w-[208px] flex flex-col gap-3 animate-fade-in">
-          <section class="bg-zinc-100 w-[208px] min-h-[400px] p-4 flex flex-col gap-3 font-raleway">
+          <section
+            class="bg-zinc-200 w-[208px] min-h-[400px] p-4 flex flex-col gap-3 font-raleway dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100"
+          >
             <div
               v-if="
                 animeinfo.nextAiringEpisode !== null && animeinfo.nextAiringEpisode.length !== 0
               "
-              class="text-slate-700"
+              class="text-zinc-700 dark:text-zinc-300"
             >
               <h1 class="text-base font-semibold capitalize">Aired</h1>
               <p class="text-sm font-normal capitalize">
@@ -136,8 +138,8 @@
               <li
                 v-for="(genre, genreIndex) in animeinfo.genres"
                 :key="genreIndex"
-                :style="{ backgroundColor: getRandomColor() }"
-                class="text-sm font-bold py-1 px-3 rounded-full text-white w-fit bg-zinc-500 hover:bg-zinc-950 transition-all duration-200 ease-linear"
+                :style="{ backgroundColor: getGenreColor(genre) }"
+                class="text-sm font-bold py-1 px-3 rounded-full text-white w-fit bg-zinc-200 hover:bg-zinc-400 transition-all duration-200 ease-linear"
               >
                 <router-link :to="{ name: 'Animegener', params: { tag: genre } }">
                   {{ genre }}
@@ -152,8 +154,7 @@
               <li
                 v-for="(tags, tagIndex) in animeinfo.tags"
                 :key="tagIndex"
-                :style="{ backgroundColor: getRandomColor() }"
-                class="py-1 px-2 bg-zinc-500 hover:bg-zinc-950 transition-all duration-200 ease-linear text-white rounded-sm capitalize font-medium"
+                class="py-1 px-2 text-zinc-900 bg-zinc-200 dark:text-zinc-100 hover:bg-zinc-400 dark:bg-zinc-800 dark:hover:bg-zinc-900 transition-all duration-200 ease-linear rounded-sm capitalize font-semibold"
               >
                 <router-link :to="{ name: 'Animegener', params: { tag: tags.name } }">
                   {{ tags.name }}
@@ -192,7 +193,7 @@
           <div v-if="loaders" class="flex gap-3 flex-wrap opacity-0 animate-fade-in">
             <relationsloader v-for="index in 2" :key="index" />
           </div>
-          <div v-else class="animate-fade-in flex gap-3 flex-wrap opacity-0 animate-fade-in">
+          <div v-else class="animate-fade-in flex gap-3 flex-wrap opacity-0">
             <charactercard
               v-for="(character, index) in characterInfo.edges"
               :key="index"
@@ -229,12 +230,12 @@
           </div>
           <div
             v-else
-            class="flex justify-start items-center gap-5 flex-wrap animate-fade-in opacity-0 animate-fade-in"
+            class="flex justify-start items-center gap-5 flex-wrap animate-fade-in opacity-0"
           >
             <router-link
               v-for="(anime, index) in reccomendation"
               :key="index"
-              :to="{ name: 'manga', params: { id: anime.mediaRecommendation.id } }"
+              :to="{ name: 'anime', params: { id: anime.mediaRecommendation.id } }"
               @click="handleRouterLinkClick"
               class="opacity-0 animate-fade-in"
             >
@@ -284,113 +285,54 @@ export default {
       characterInfo: [],
       currentIndex: 0,
       timer: null,
-      colors: [
-        '#F87171',
-        '#FBBF24',
-        '#FACC15',
-        '#A3E635',
-        '#6EE7B7',
-        '#93C5FD',
-        '#FBCFE8',
-        '#FCD34D',
-        '#6EE7B7',
-        '#4ADE80',
-        '#60A5FA',
-        '#7F9CF5',
-        '#A5B4FC',
-        '#C7D2FE',
-        '#FDE68A',
-        '#FCA5A5',
-        '#EAB308',
-        '#B91C1C',
-        '#DB2777',
-        '#EA885B',
-        '#F59E0B',
-        '#F87171',
-        '#FBBF24',
-        '#FACC15',
-        '#A3E635',
-        '#6EE7B7',
-        '#93C5FD',
-        '#FBCFE8',
-        '#FCD34D',
-        '#6EE7B7',
-        '#4ADE80',
-        '#60A5FA',
-        '#7F9CF5',
-        '#A5B4FC',
-        '#C7D2FE',
-        '#FDE68A',
-        '#FCA5A5',
-        '#EAB308',
-        '#B91C1C',
-        '#DB2777',
-        '#EA885B',
-        '#F59E0B',
-        '#F87171',
-        '#FBBF24',
-        '#FACC15',
-        '#A3E635',
-        '#6EE7B7',
-        '#93C5FD',
-        '#FBCFE8',
-        '#FCD34D',
-        '#6EE7B7',
-        '#4ADE80',
-        '#60A5FA',
-        '#7F9CF5',
-        '#A5B4FC',
-        '#C7D2FE',
-        '#FDE68A',
-        '#FCA5A5',
-        '#EAB308',
-        '#B91C1C',
-        '#DB2777',
-        '#EA885B',
-        '#F59E0B',
-        '#F87171',
-        '#FBBF24',
-        '#FACC15',
-        '#A3E635',
-        '#6EE7B7',
-        '#93C5FD',
-        '#FBCFE8',
-        '#FCD34D',
-        '#6EE7B7',
-        '#4ADE80',
-        '#60A5FA',
-        '#7F9CF5',
-        '#A5B4FC',
-        '#C7D2FE',
-        '#FDE68A',
-        '#FCA5A5',
-        '#EAB308',
-        '#B91C1C',
-        '#DB2777',
-        '#EA885B',
-        '#F59E0B',
-        '#F87171',
-        '#FBBF24',
-        '#FACC15',
-        '#A3E635',
-        '#6EE7B7',
-        '#93C5FD',
-        '#FBCFE8',
-        '#FCD34D',
-        '#6EE7B7',
-        '#4ADE80',
-        '#60A5FA',
-        '#7F9CF5',
-        '#A5B4FC',
-        '#C7D2FE',
-        '#FDE68A',
-        '#FCA5A5',
-        '#EAB308',
-        '#B91C1C',
-        '#DB2777',
-        '#EA885B',
-        ' '
-      ]
+      colors: {
+        action: '#d32f2f', // Dark Red
+        adventure: '#f57f17', // Dark Orange
+        comedy: '#ffb300', // Amber
+        drama: '#388e3c', // Dark Green
+        ecchi: '#009688', // Teal
+        fantasy: '#1565c0', // Dark Blue
+        hentai: '#c2185b', // Dark Pink
+        horror: '#8e24aa', // Purple
+        'mahou shoujo': '#43a047', // Dark Green
+        mecha: '#1976d2', // Dark Blue
+        music: '#0288d1', // Dark Blue
+        mystery: '#5e35b1', // Dark Purple
+        psychological: '#3949ab', // Dark Blue
+        romance: '#d81b60', // Dark Pink
+        'sci-fi': '#7b1fa2', // Dark Purple
+        'slice of life': '#f57c00', // Dark Orange
+        sports: '#d32f2f', // Dark Red
+        supernatural: '#7b1fa2', // Dark Purple
+        thriller: '#c2185b', // Dark Pink
+        history: '#5d4037', // Dark Brown
+        documentary: '#616161', // Gray
+        western: '#5d4037', // Dark Brown
+        noir: '#212121', // Black
+        cyberpunk: '#512da8', // Deep Purple
+        superhero: '#e64a19', // Deep Orange
+        magic: '#6a1b9a', // Dark Purple
+        school: '#1a237e', // Dark Blue
+        shounen: '#d84315', // Dark Red
+        shoujo: '#e91e63', // Pink
+        seinen: '#ff6f00', // Dark Orange
+        josei: '#880e4f', // Dark Pink
+        space: '#4a148c', // Dark Purple
+        samurai: '#8e0000', // Dark Red
+        historical: '#3e2723', // Dark Brown
+        vampire: '#6a1b9a', // Dark Purple
+        demon: '#1a237e', // Dark Blue
+        cyborg: '#004d40', // Dark Teal
+        ninja: '#004d40', // Dark Teal
+        'post-apocalyptic': '#263238', // Dark Gray
+        'time travel': '#546e7a', // Gray
+        'urban fantasy': '#263238', // Dark Gray
+        'martial arts': '#8e0000', // Dark Red
+        'magical girl': '#d81b60', // Dark Pink
+        zombie: '#263238', // Dark Gray
+        detective: '#263238', // Dark Gray
+        war: '#5d4037'
+      }
     }
   },
   computed: {
@@ -462,8 +404,8 @@ export default {
         params: { id: id.toString() }
       }
     },
-    getRandomColor() {
-      return this.colors[Math.floor(Math.random() * this.colors.length)]
+    getGenreColor(genre) {
+      return this.colors[genre.toLowerCase()] || '#757575'
     },
 
     fetchData() {

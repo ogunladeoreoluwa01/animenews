@@ -79,7 +79,7 @@
       </div>
       <div v-else class="flex flex-col items-center justify-start gap-5 opacity-0 animate-fade-in">
         <div
-          class="flex w-[1280px] h-[80px] p-[10px] bg-slat-50 font-raleway dark:bg-zinc-300 opacity-0 animate-fade-in"
+          class="flex w-[1280px] h-[80px] p-[10px] bg-slat-50 font-raleway bg-zinc-200 dark:bg-zinc-800 opacity-0 animate-fade-in"
           v-for="(anime, index) in top"
           :key="index + anime.id"
         >
@@ -96,14 +96,15 @@
             ><img
               :src="anime.coverImage.large"
               :alt="anime.title.userPreferred"
-              class="w-[48px] h-[60px] bg-slate-500"
+              class="w-[48px] h-[60px]"
+              :style="{ backgroundColor: anime.coverImage.color }"
           /></router-link>
 
           <div class="pt-[8px] pb-[4px] px-2 flex">
             <div class="w-[700px] flex flex-col items-start gap-1">
               <router-link
                 :to="{ name: 'anime', params: { id: anime.id } }"
-                class="font-semibold capitalize text-sm"
+                class="font-semibold capitalize text-sm text-zinc-900 dark:text-zinc-100"
                 >{{ anime.title.userPreferred }}</router-link
               >
               <ul class="flex flex-row gap-1">
@@ -122,10 +123,12 @@
 
             <div class="w-[130px]"></div>
             <div class="w-[130px] text-xs font-bold capitalize flex flex-col p-1">
-              <h1 class="font-bold capitalize text-sm">
+              <h1 class="font-bold capitalize text-sm text-zinc-900 dark:text-zinc-100">
                 {{ anime.format }} {{ anime.format === 'TV' ? 'Show' : '' }}
               </h1>
-              <p class="text-xs text-zinc-500 font-medium font-raleway capitalize">
+              <p
+                class="text-xs text-zinc-500 dark:text-zinc-600 font-medium font-raleway capitalize"
+              >
                 {{
                   anime.format !== 'TV'
                     ? formatDuration(anime.duration)
@@ -134,10 +137,12 @@
               </p>
             </div>
             <div class="w-[130px] text-xs font-bold capitalize flex flex-col p-1">
-              <h1 class="font-bold capitalize text-sm">
+              <h1 class="font-bold capitalize text-sm text-zinc-900 dark:text-zinc-100">
                 {{ anime.season }} {{ anime.seasonYear }}
               </h1>
-              <p class="text-xs text-zinc-500 font-medium font-raleway capitalize">
+              <p
+                class="text-xs text-zinc-500 dark:text-zinc-600 font-medium font-raleway capitalize"
+              >
                 {{ anime.status }}
               </p>
             </div>
@@ -145,16 +150,6 @@
         </div>
       </div>
     </section>
-    <div class="flex">
-      <cardcomp />
-
-      <router-link to=""> <cardcompHover /></router-link>
-      <router-link to=""> <cardcompHover /></router-link>
-      <router-link to=""> <cardcompHover /></router-link>
-      <router-link to=""> <cardcompHover /></router-link>
-      <router-link to=""> <cardcompHover /></router-link>
-      <router-link to=""> <cardcompHover /></router-link>
-    </div>
   </section>
 </template>
 
@@ -359,12 +354,11 @@ export default {
     }
   },
   mounted() {
-    this.fetchData() // Call fetchData method when the component is mounted
+    this.fetchData()
+    window.scrollTo(0, 0) // Call fetchData method when the component is mounted
   },
   watch: {
-    $route() {
-      window.scrollTo(0, 0)
-    }
+    $route() {}
   }
 }
 </script>

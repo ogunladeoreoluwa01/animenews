@@ -74,7 +74,8 @@ export default {
       isLoading: false,
       retries: 3,
       ismore: false,
-      search: this.$route.params.search
+      search: this.$route.params.search,
+      compkey: 0
     }
   },
 
@@ -141,7 +142,7 @@ export default {
         }, 1000)
         // Your API call logic for "title"
       }
-      if (routeCheck === 'average score') {
+      if (routeCheck === 'top-100') {
         this.sort = ['SCORE_DESC']
         console.log(this.sort)
         this.isLoading = false
@@ -282,7 +283,7 @@ export default {
     }
   },
   mounted() {
-    this.RouteCheck(), window.addEventListener('scroll', this.handleScroll)
+    this.RouteCheck(), window.addEventListener('scroll', this.handleScroll), window.scrollTo(0, 0)
   },
   beforeUnmount() {
     window.removeEventListener('scroll', this.handleScroll)

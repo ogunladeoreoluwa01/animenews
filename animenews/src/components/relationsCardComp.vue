@@ -1,9 +1,15 @@
 <template>
-  <div class="flex h-[115px] font-raleway text-pretty">
-    <img :src="imageSource" alt="" class="w-[85px] h-[115px]" />
-    <div class="w-[250px] h-[115px] p-3 flex flex-col justify-between bg-zinc-100">
+  <div class="flex h-[115px] font-raleway text-pretty group overflow-hidden">
+    <img
+      :src="imageSource"
+      alt=""
+      class="w-[85px] h-[115px] group-hover:scale-110 transition-all duration-200 ease-linear"
+    />
+    <div
+      class="w-[250px] h-[115px] p-3 flex flex-col justify-between bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100"
+    >
       <div>
-        <h1 class="text-xs font-bold capitalize">{{ title }}</h1>
+        <h1 class="text-xs font-bold capitalize">{{ transformString(title) }}</h1>
         <p class="text-base leading-snug font-medium capitalize h-[48px] line-clamp-2">
           {{ subtitle }}
         </p>

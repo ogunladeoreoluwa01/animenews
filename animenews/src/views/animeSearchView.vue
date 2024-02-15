@@ -6,7 +6,7 @@
       <h1>{{ $route.params.search }}</h1>
     </div>
     <filterBarComp class="sticky z-30" />
-    <section class="mt-6 flex flex-wrap gap-6">
+    <section class="mt-6 flex flex-wrap gap-6 ">
       <div class="flex flex-wrap gap-6">
         <div v-if="isLoading" class="flex flex-wrap gap-6">
           <cardcompHover
@@ -107,7 +107,7 @@ export default {
       const routeCheck = this.$route.params.search
       if (routeCheck === 'all anime') {
         this.sort = ['ID_DESC', 'POPULARITY_DESC']
-        console.log(this.sort)
+
         this.isLoading = false
         setTimeout(() => {
           this.fetchData()
@@ -116,7 +116,7 @@ export default {
       }
       if (routeCheck === 'trending') {
         this.sort = ['TRENDING_DESC', 'POPULARITY_DESC']
-        console.log(this.sort)
+
         this.isLoading = false
         setTimeout(() => {
           this.fetchData()
@@ -125,7 +125,7 @@ export default {
       }
       if (routeCheck === 'popular') {
         this.sort = ['POPULARITY_DESC']
-        console.log(this.sort)
+
         this.isLoading = false
         setTimeout(() => {
           this.fetchData()
@@ -134,16 +134,16 @@ export default {
       }
       if (routeCheck === 'title') {
         this.sort = ['TITLE_DESC', 'POPULARITY_DESC']
-        console.log(this.sort)
+
         this.isLoading = false
         setTimeout(() => {
           this.fetchData()
         }, 1000)
         // Your API call logic for "title"
       }
-      if (routeCheck === 'average score') {
+      if (routeCheck === 'top-100') {
         this.sort = ['SCORE_DESC']
-        console.log(this.sort)
+
         this.isLoading = false
         setTimeout(() => {
           this.fetchData()
@@ -152,7 +152,7 @@ export default {
       }
       if (routeCheck === 'date added') {
         this.sort = ['ID_DESC']
-        console.log(this.sort)
+
         this.isLoading = false
         setTimeout(() => {
           this.fetchData()
@@ -161,7 +161,7 @@ export default {
       }
       if (routeCheck === 'release date') {
         this.sort = ['START_DATE_DESC']
-        console.log(this.sort)
+
         this.isLoading = false
         setTimeout(() => {
           this.fetchData()
@@ -253,7 +253,6 @@ export default {
         .then((response) => response.json())
         .then((data) => {
           this.animeInfo = [...this.animeInfo, ...data.data.Page.media]
-          console.log(data)
 
           setTimeout(() => {
             this.isLoading = true
@@ -282,7 +281,7 @@ export default {
     }
   },
   mounted() {
-    this.RouteCheck(), window.addEventListener('scroll', this.handleScroll)
+    this.RouteCheck(), window.addEventListener('scroll', this.handleScroll), window.scrollTo(0, 0)
   },
   beforeUnmount() {
     window.removeEventListener('scroll', this.handleScroll)
